@@ -11,7 +11,7 @@ Once logged in you are able to view and play your **recently liked tracks**, **p
 
 
 
-## For installation 
+## For Installation 
 
 Once the app is cloned or downloaded and the packages are installed by running "**npn run install**" in your terminal.
 
