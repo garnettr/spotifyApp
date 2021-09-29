@@ -6,7 +6,7 @@
 
 
 This app is built using Spotify open API, allowing the user to securely log in to their profile and view a custom dashboard. 
-The information that will be displayed is your **recently liked tracks**, **played artist** and you includes a **search feature**.
+The information that will be displayed is your **recently liked tracks**, **played artist** and includes a **search feature**.
 
 
 
