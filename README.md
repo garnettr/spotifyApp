@@ -4,9 +4,10 @@
 
 ## About App 
 
-This app is built using the Spotify API, and uses your profiles data to display a custom profile using your listeining data.
-Sounds creepy...its not :) 
-Once logged in you are able to view and play your **recently liked tracks**, **played artist** and you are able to **search for tracks and artist**.
+
+This app is built using Spotify open API, allowing the user to securely log in to their profile and view a custom dashboard. 
+The information that will be displayed is your **recently liked tracks**, **played artist** and you includes a **search feature**.
+
 
 
 
