@@ -2,16 +2,17 @@ import React, { Component } from "react";
 import * as $ from "jquery";
 import { authEndpoint, clientId, redirectUri, scopes } from "./config";
 import hash from "./hash";
-import Player from "./Player";
 import SearchTerms from "./Search";
 import { SearchedArtist } from "./SearchedArtist";
 import { TopTracks } from "./TopTracks";
 import { RecentlyPlayed } from "./RecentlyPlayed";
 import { IframePlayer } from "./IframePlayer";
-import "./App.css";
+import "./App.scss";
 import { Welcome } from "./Welcome";
+import { Menu } from "./Menu";
 
 class App extends Component {
+
   constructor() {
     super();
     this.state = {
@@ -39,11 +40,13 @@ class App extends Component {
       artist_search: "",
       is_playing: "Paused",
       progress_ms: 0,
+      likedTracksToggle: true,
     };
     this.getCurrentlyPlaying = this.getCurrentlyPlaying.bind(this);
     this.grabCurrentSearch = this.grabCurrentSearch.bind(this);
     this.setNewSearch = this.setNewSearch.bind(this);
     this.updateTrackId = this.updateTrackId.bind(this);
+    this.showTracksToggle = this.showTracksToggle.bind(this);
   }
   componentDidMount() {
     // Set token
@@ -98,7 +101,7 @@ class App extends Component {
             searchItem: data.tracks.items,
           },
           () => {
-            console.log(data);
+            // console.log(data);
           }
         );
       },
@@ -108,7 +111,21 @@ class App extends Component {
     });
   };
 
+  showTracksToggle = () => {
+    this.setState(
+      (state) => ({
+        likedTracksToggle: !state.likedTracksToggle,
+        recentlyPlayedToggle: !state.recentlyPlayedToggle
+      })
+    );
+  }
+  
+
+
+
+
   // --- End Search Component Code
+
 
   // Update Track ID
   updateTrackId(trackOrAlbum, id, image) {
@@ -134,7 +151,7 @@ class App extends Component {
           //   is_playing: data.is_playing,
           //   progress_ms: data.progress_ms,
           // });
-          console.log(data);
+          // console.log(data);
         },
       }),
       a2 = $.ajax({
@@ -191,44 +208,72 @@ class App extends Component {
 
   render() {
     return (
-      <div className="App">
-        <div className="App-header">
+        <>
           {!this.state.token && (
-            <a
-              className="btn btn--loginApp-link"
+            <section className="introWrapper">
+
+            <div className="introContent">
+
+            <h1>Hey.</h1>
+            <p>This app is built using Spotify's open source API, allowing the user to securely sign in to their profile and view a custom dashboard. 
+            <br></br><br></br>
+            View your <b>recently liked tracks, played artist </b> and includes a <b>search feature.</b>
+            </p>
+
+              <a className="btn btn-dark"
               href={`${authEndpoint}?client_id=${clientId}&redirect_uri=${redirectUri}&scope=${scopes.join(
                 "%20"
-              )}&response_type=token&show_dialog=true`}
-            >
-              Login to Spotify
+              )}&response_type=token&show_dialog=true`}>
+
+            
+              See how it works
             </a>
+            </div>
+
+
+            </section>
           )}
 
           {this.state.token && (
             <>
-              <Welcome userInfo={this.state.userInfo} />
-              <div className="leftColumn">
+            <Welcome userInfo={this.state.userInfo} />
+            <section className="contentWrapper vibesoff">
+              <section className="searchWrapper">
                 <SearchTerms
                   handleNewSearch={this.handleNewSearch}
                   searchItem={this.state.searchItem}
                 />
                 <IframePlayer TrackInfo={this.state.TrackInfo} />
-              </div>
-              <div className="rightColumn">
-                <TopTracks
-                  topTracks={this.state.topTracks}
-                  updateTrackId={this.updateTrackId}
-                />
-                <RecentlyPlayed
-                  recentlyPlayed={this.state.recentlyPlayed}
-                  updateTrackId={this.updateTrackId}
-                />
                 <SearchedArtist
                   searchItem={this.state.searchItem}
                   updateTrackId={this.updateTrackId}
                   TrackId={this.state.TrackId}
                 />
-              </div>
+              </section>
+              <section className="likedTracksContent">
+                <TopTracks
+                  topTracks={this.state.topTracks}
+                  updateTrackId={this.updateTrackId}
+                  likedTracksToggle={this.state.likedTracksToggle}
+                />
+                <RecentlyPlayed
+                  recentlyPlayed={this.state.recentlyPlayed}
+                  recentlyPlayedToggle = {this.state.recentlyPlayedToggle}
+                  updateTrackId={this.updateTrackId}
+                />
+
+              </section>
+            </section>
+
+            <footer>
+              <Menu 
+              showHideLikedTracks={this.state.likedTracksToggle}
+              showTracksToggle ={this.showTracksToggle}
+              showHidePlayedTracks={this.state.recentlyPlayedToggle}
+              showRecentlyPlayed = {this.showRecentlyPlayed}
+              
+              />
+            </footer>
 
               {/* <Player
                 item={this.state.item}
@@ -237,8 +282,7 @@ class App extends Component {
               /> */}
             </>
           )}
-        </div>
-      </div>
+        </>
     );
   }
 }

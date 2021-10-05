@@ -8,10 +8,11 @@ class IframePlayer extends React.Component {
         {TrackInfo.TrackId.length > 0 && (
           <>
             <div className="nowPlaying-image">
-              <img src={TrackInfo.images} />
+              <img alt={TrackInfo.TrackId} src={TrackInfo.images} />
             </div>
 
             <iframe
+              title="spotify-player"
               src={`https://open.spotify.com/embed/${TrackInfo.trackOrAlbum}/${TrackInfo.TrackId}`}
               width="300"
               height="80"
